@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from .transform import ImageTransformer, TransformerGroup, GrayFilter
+from .transform import ImageTransformer
+from ..transformers import TransformerGroup, GrayFilter
 
 
 @dataclass

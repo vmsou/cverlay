@@ -4,7 +4,8 @@ import numpy as np
 
 from PyQt6 import QtCore
 
-from cverlay.detector import Detection, ImageTransformer
+from cverlay.detection import Detection
+from cverlay.image.transform import ImageTransformer
 from cverlay.window.model import Scanner
 from cverlay.window.view.scanner import ScannerView
 

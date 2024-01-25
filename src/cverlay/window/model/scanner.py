@@ -7,12 +7,12 @@ import numpy as np
 
 from PyQt6 import QtCore
 
-from cverlay.window.capture import WindowCaptureThread
-from cverlay.detector import Detection
+from cverlay.detection import Detection
 from cverlay.image.transform import ImageTransformer
+from cverlay.window.capture import WindowCaptureThread
 from cverlay.window.view import ScannerView
 
-from common.thread import PausableThread
+from cverlay.common.thread import PausableThread
 
 
 class IScanner(metaclass=ABCMeta):

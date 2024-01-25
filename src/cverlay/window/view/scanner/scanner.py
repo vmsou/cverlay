@@ -3,8 +3,9 @@ import numpy as np
 from PyQt6 import QtWidgets, QtGui, QtCore
 from PyQt6.QtCore import Qt
 
-from cverlay.window.view.scanner.resizer import SizeGripGraphicsItem, MoveGripGraphicsItem
-from cverlay.detector import Detection
+from cverlay.detection import Detection
+
+from .resizer import SizeGripGraphicsItem, MoveGripGraphicsItem
 
 class ScannerView(QtWidgets.QGraphicsRectItem):
     class Signals(QtCore.QObject):

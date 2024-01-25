@@ -2,7 +2,7 @@ import re
 
 from PyQt6 import QtCore
 
-from cverlay.detector import Detection
+from cverlay.detection import Detection
 from cverlay.window.capture import WindowCaptureThread
 from cverlay.window.model.scanner import Scanner
 from cverlay.window.controller.scanner import ScannerController

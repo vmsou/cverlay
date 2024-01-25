@@ -6,9 +6,8 @@ from typing import Literal
 import numpy as np
 
 from cverlay.image.transform import ImageTransformer
-
-from .detector import Detector, DetectorGroup, ColorDetector, ImageDetector
-from .detection.filter import DetectionFilter, AreaFilter, ConfidenceFilter, BestFilter
+from cverlay.detector.detectors import Detector, DetectorGroup, ColorDetector, ImageDetector
+from cverlay.detection.filters import DetectionFilter, AreaFilter, ConfidenceFilter, BestFilter
 
 
 @dataclass
@@ -130,4 +129,3 @@ class DetectorBuilder:
         """
 
         return DetectorGroup(self._detectors, self._transformers, self._filters)
-

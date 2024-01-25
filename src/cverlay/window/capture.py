@@ -10,7 +10,7 @@ import win32api, win32gui, win32ui, win32con
 
 from PyQt6 import QtCore
 
-from common.thread import PausableThread
+from cverlay.common.thread import PausableThread
 
 
 class WindowCapture:

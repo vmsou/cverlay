@@ -37,7 +37,7 @@ class Overlay:
         overlay = Overlay(maxFPS=2, hardwareAccel=True)
         blueDetector =  DetectorBuilder().color("blue", (80, 44, 0), (121, 255, 255), color="#000080").build()
         blueScanner = Scanner("Blue", blueDetector, (500, 500, 100, 100))
-        overlay.addScanner(OrangeScanner)
+        overlay.addScanner(blueScanner)
         overlay.exec()
     """
 
