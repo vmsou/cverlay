@@ -2,12 +2,12 @@ import cv2
 
 from cverlay import Overlay
 
-from cverlay.detector import NetDetector
 from cverlay.scanner import Scanner
+from cverlay.detector.detectors import NetDetector
 
 
 def main() -> None:
-    overlay = Overlay(maxFPS=5, hardwareAccel=True)
+    overlay = Overlay(visionMaxFPS=5, hardwareAccel=True)
 
     # source: https://github.com/chuanqi305/MobileNet-SSD/
     prototxt_path = "examples/DNN/models/MobileNetSSD_deploy.prototxt"
