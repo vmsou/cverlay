@@ -5,9 +5,12 @@ from typing import Literal
 
 import numpy as np
 
+from cverlay.detector import Detector
+from cverlay.detection.filter import DetectionFilter
 from cverlay.image.transform import ImageTransformer
-from cverlay.detector.detectors import Detector, DetectorGroup, ColorDetector, ImageDetector
-from cverlay.detection.filters import DetectionFilter, AreaFilter, ConfidenceFilter, BestFilter
+
+from cverlay.detector.detectors import DetectorGroup, ColorDetector, ImageDetector
+from cverlay.detection.filters import *
 
 
 @dataclass
@@ -24,6 +27,7 @@ class DetectorBuilder:
         - minArea : minimum area for each detection
         - threshold : minimum confidence for each detection
         - best : select n best detections
+        - groupRectangles : groups close rectangles into one
     
     Example: 
     .. code-block:: python
@@ -66,6 +70,10 @@ class DetectorBuilder:
     
     def best(self, n: int = 1) -> DetectorBuilder:
         filter = BestFilter(n)
+        return self.filter(filter)
+    
+    def groupRectangles(self, groupThreshold: float, eps: float = 0.5) -> DetectorBuilder:
+        filter = GroupRectangles(groupThreshold, eps)
         return self.filter(filter)
 
     # Detectors

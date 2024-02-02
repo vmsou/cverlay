@@ -12,7 +12,6 @@ class Agent(ABC):
     def __init__(self, layout: Layout | None = None):
         self.layout: Layout = layout
         self.status = False
-        # self.thread = Thread(target=self.run, daemon=True)
         self.thread = Thread(target=self.run, daemon=True)
         self.thread.start()
 
@@ -25,15 +24,18 @@ class Agent(ABC):
     def setLayout(self, layout: Layout):
         self.layout = layout
 
-    def start(self):
+    def play(self):
         self.status = True
+
+    def pause(self):
+        self.status = False
 
     def stop(self):
         self.status = False
 
     def toggle(self):
-        if self.status: self.stop()
-        else: self.start()
+        if self.status: self.pause()
+        else: self.play()
 
     def sleep(self, secs: float):
         time.sleep(secs)

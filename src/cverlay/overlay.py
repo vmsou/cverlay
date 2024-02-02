@@ -1,8 +1,8 @@
 import sys
 
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtCore
 
-from cverlay.window.window import AutomationWindow
+from cverlay.window.window import OverlayView, CverlayWindow
 from cverlay.window.model import Scanner, Layout
 from cverlay.window.controller.layout import LayoutController
 from cverlay.window.view.layout import LayoutView
@@ -18,11 +18,9 @@ class Overlay:
     You can also attach an Agent for automation with `setAgent()` method.
     
     Attributes:
-        window_title : str
-            Searches for window to attach scanners to. If set to None, window must be manually set through Application GUI
-        maxFPS : int
+        visionMaxFPS : int
             FPS at which screen captures occurs
-        appMaxFPS : int
+        drawMaxFPS : int
             Application FPS (Drawings on the screen). Defaults to 30 FPS, but it can be lowered for better performance
         hardwareAccel : bool
             Some application may appear as blank images with traditional screen capture methods. If set to true; screen capture handles hardware acceleration
@@ -41,26 +39,18 @@ class Overlay:
         overlay.exec()
     """
 
-    def __init__(self, window_title: str | None = None, maxFPS: int = 1, appMaxFPS: int = 30, hardwareAccel: bool = False):
+    def __init__(self, visionMaxFPS: int = 1, drawMaxFPS: int = 30, hardwareAccel: bool = False):
         self.app = QtWidgets.QApplication(sys.argv)
+        QtCore.QCoreApplication.setOrganizationName("vmsou")
+        QtCore.QCoreApplication.setApplicationName("cverlay")
+        QtCore.QCoreApplication.setApplicationVersion("0.1")
+
         self.app.setQuitOnLastWindowClosed(False)
-        self.window = AutomationWindow(appMaxFPS)
+        self.window = CverlayWindow(drawMaxFPS)
 
-        if window_title: self.window.setWindowFromTitle(window_title)
+        self.setLayout(Layout(None, visionMaxFPS, hardwareAccel))
 
-        self._load()
-
-        self.setLayout(Layout(None, maxFPS, hardwareAccel))
-
-    def _load(self, filepath="res/style.qss"):
-        """file = QtCore.QFile(filepath)
-        file.open(file.OpenModeFlag.ReadOnly)
-        qd = QtCore.QStringDecoder(QtCore.QStringConverter.Encoding.Latin1)
-        styleSheet = qd.decode(file.readAll())
-        self.app.setStyleSheet(styleSheet)
-        """
-        with open(filepath) as f:
-            self.app.setStyleSheet(f.read())
+        self.window.show()
 
     def getLayout(self) -> Layout:
         return self.layoutController.model

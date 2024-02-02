@@ -8,9 +8,9 @@ from cverlay.window.model.scanner import Scanner
 from cverlay.window.controller.scanner import ScannerController
 
 class Layout:
-    def __init__(self, hwnd: int | None = None, maxFPS: int = 1, hardwareAccel: bool = False):
+    def __init__(self, winId: int | None = None, maxFPS: int = 1, hardwareAccel: bool = False):
         self.scanners: list[ScannerController] = []
-        self.captureThread = WindowCaptureThread(hwnd, maxFPS, hardwareAccel)
+        self.captureThread = WindowCaptureThread(winId, maxFPS, hardwareAccel)
 
     def scannerAt(self, pos: QtCore.QPointF):
         for s in self.scanners:
@@ -30,13 +30,13 @@ class Layout:
 
         return list(filter(lambda sc: isMatch(sc.getName()), self.scanners))
     
-    def getHwnd(self) -> int: return self.captureThread.getHwnd()
+    def getWinId(self) -> int: return self.captureThread.getWinId()
     
     def getMaxFPS(self) -> int: return self.captureThread.getMaxFPS()
 
     def isHardwareAccel(self) -> bool: return self.captureThread.isHardwareAccel()
 
-    def setHwnd(self, hwnd: int): self.captureThread.setHwnd(hwnd)
+    def setWinId(self, winId: int): self.captureThread.winId(winId)
 
     def setMaxFPS(self, maxFPS: int): self.captureThread.setMaxFPS(maxFPS)
 
@@ -69,9 +69,9 @@ class Layout:
         self.captureThread.start(play=False)
         for s in self.scanners: s.start()
 
-    def resume(self):
-        self.captureThread.resume()
-        for s in self.scanners: s.resume()
+    def play(self):
+        self.captureThread.play()
+        for s in self.scanners: s.play()
 
     def pause(self):
         self.captureThread.pause()
@@ -79,4 +79,4 @@ class Layout:
 
     def toggle(self):
         if self.isActive(): self.pause()
-        else: self.resume()
+        else: self.play()

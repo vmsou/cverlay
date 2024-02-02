@@ -9,11 +9,11 @@ class LayoutController:
         self.model = model
         self.view = view
 
-    def setEditing(self, editing: bool):
-        self.view.setEditing(editing)
+    def setLocked(self, locked: bool):
+        self.view.setLocked(locked)
     
-    def setHwnd(self, hwnd: int):
-        self.model.setHwnd(hwnd)
+    def setWinId(self, winId: int):
+        self.model.setWinId(winId)
 
     def scannerAt(self, pos: QtCore.QPointF):
         return self.model.scannerAt(pos)
@@ -26,7 +26,7 @@ class LayoutController:
 
     def start(self): self.model.start()
     def stop(self): self.model.pause()
-    def resume(self): self.model.resume()
+    def play(self): self.model.play()
     def pause(self): self.model.pause()
     def toggle(self): self.model.toggle()
 

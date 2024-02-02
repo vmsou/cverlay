@@ -36,11 +36,11 @@ class PausableThread(Thread):
     def isPaused(self) -> bool: return not self.isPlaying()
 
     # Playback methods
-    def resume(self): self._statusEvent.set()
+    def play(self): self._statusEvent.set()
     def pause(self): self._statusEvent.clear()
     def toggle(self):
         if self.isPlaying(): self.pause()
-        else: self.resume()
+        else: self.play()
 
     def run(self) -> None:
         super().run
@@ -67,12 +67,12 @@ def main() -> None:
     print("[RUN] 2s")
     t.start(play=False)
     time.sleep(2)
-    t.resume()
+    t.play()
     print("[WAIT] 2s")
     t.pause()
     time.sleep(2)
     print("[RUN] 3s")
-    t.resume()
+    t.play()
     time.sleep(3)
     print("[STOP]")
     t.stop()

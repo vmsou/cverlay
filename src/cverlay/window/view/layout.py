@@ -14,9 +14,9 @@ class LayoutView(QtWidgets.QGraphicsItem):
     def getScanners(self) -> list[ScannerView]:
         return self.childItems()
     
-    def setEditing(self, editing: bool):
+    def setLocked(self, locked: bool):
         for scanner in self.getScanners():
-            scanner.setEditing(editing)
+            scanner.setLocked(locked)
     
     def addScanner(self, scannerView: ScannerView):
         scannerView.setParentItem(self)

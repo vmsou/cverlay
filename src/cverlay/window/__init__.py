@@ -1,1 +1,1 @@
-from .window import AutomationWindow
+from .window import OverlayView

@@ -23,7 +23,7 @@ class ScannerView(QtWidgets.QGraphicsRectItem):
 
         # Flags
         self.hovering = False
-        self.editing = True
+        self.locked = False
         self.running = False
         self.imageVisible = False
 
@@ -93,8 +93,8 @@ class ScannerView(QtWidgets.QGraphicsRectItem):
         super().setRect(0, 0, max(self.MIN_WIDTH, w), max(self.MIN_HEIGHT, h))
         self.setPos(QtCore.QPointF(x, y))
 
-    def setEditing(self, editing: bool):
-        self.editing = editing
+    def setLocked(self, locked: bool):
+        self.locked = locked
         self.setImageVisible(False)
 
     def setRunning(self, running: bool):
@@ -144,34 +144,30 @@ class ScannerView(QtWidgets.QGraphicsRectItem):
         return super().hoverLeaveEvent(event)
 
     def colorScheme(self) -> tuple[QtGui.QColor, QtGui.QColor]:
-        if self.editing:
-            if not self.running: return QtGui.QColor(134, 132, 130, 75), QtGui.QColor(53, 50, 47, 75)
-            if self.found:
-                return QtGui.QColor(0, 128, 0, 100), QtGui.QColor(0, 255, 0, 50)
-            return QtGui.QColor(128, 0, 0, 100), QtGui.QColor(255, 0, 0, 50)
-        else:
-            #if not self.running: return QtGui.QColor(134, 132, 130, 25), QtGui.QColor(53, 50, 47, 50)
-            #if self.found:
-            #    return QtGui.QColor(0, 128, 0, 50), QtGui.QColor(0, 255, 0, 25)
-            #return QtGui.QColor(128, 0, 0, 50), QtGui.QColor(255, 0, 0, 25)
-            return QtGui.QColor(134, 132, 130, 0), QtGui.QColor(53, 50, 47, 0)
+        grayOpacity = 35 if self.locked else 75
+        fillOpacity = 0 if self.locked else 5
+        borderOpacity = 50 if self.locked else 100
         
+        if not self.running: return QtGui.QColor(134, 132, 130, grayOpacity), QtGui.QColor(53, 50, 47, grayOpacity)  # Gray
+        if self.found:
+            return QtGui.QColor(0, 128, 0, borderOpacity), QtGui.QColor(0, 255, 0, fillOpacity)
+        return QtGui.QColor(128, 0, 0, borderOpacity), QtGui.QColor(255, 0, 0, fillOpacity)
 
     def paintBorder(self, painter: QtGui.QPainter, scheme: tuple[QtGui.QColor, QtGui.QColor]):
-        painter.setPen(QtGui.QPen(scheme[0 if self.editing else self.hovering], 2, Qt.PenStyle.SolidLine))
+        painter.setPen(QtGui.QPen(scheme[0 if not self.locked else self.hovering], 2, Qt.PenStyle.SolidLine))
         painter.drawRect(self.boundingRect())
 
     def paintFill(self, painter: QtGui.QPainter, scheme: tuple[QtGui.QColor, QtGui.QColor]):
         painter.fillRect(self.boundingRect(), scheme[1])
 
     def paintName(self, painter: QtGui.QPainter, scheme: tuple[QtGui.QColor, QtGui.QColor]):
-        painter.setPen(QtGui.QPen(scheme[0 if self.editing else self.hovering], 2, Qt.PenStyle.SolidLine))
+        painter.setPen(QtGui.QPen(scheme[0 if not self.locked else self.hovering], 2, Qt.PenStyle.SolidLine))
         painter.setFont(self.font1)
         painter.drawText(self.boundingRect(), Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignCenter, self.name)
         painter.drawText(self.boundingRect(), Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight, f"{self.confidence:.2f}")
 
     def paintRectInfo(self, painter: QtGui.QPainter, scheme: tuple[QtGui.QColor, QtGui.QColor]):
-        painter.setPen(QtGui.QPen(scheme[0 if self.editing else self.hovering], 2, Qt.PenStyle.SolidLine))
+        painter.setPen(QtGui.QPen(scheme[0 if not self.locked else self.hovering], 2, Qt.PenStyle.SolidLine))
         painter.setFont(QtGui.QFont("Arial", 6))
         painter.drawText(self.boundingRect().adjusted(4, 2, -4, -2), Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft, f"{self.sceneBoundingRect().toRect().getRect()}")
 

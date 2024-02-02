@@ -19,13 +19,13 @@ class WindowComboBox(QtWidgets.QComboBox):
 
         return super().mousePressEvent(e)
     
-    @classmethod
-    def getWindows(cls) -> list[tuple[int, str]]:
-        windows: list[tuple[int, str]] = []
-        def winEnumHandler(hwnd, ctx):
-            if win32gui.IsWindowVisible(hwnd):
-                title = win32gui.GetWindowText(hwnd)
-                if title: windows.append((hwnd, f"{hex(hwnd)} - {title}"))
+    @staticmethod
+    def getWindows() -> list[tuple[int, str]]:
+        windows: list[tuple[int, str]] = [(0, "None")]  # (-1, "Active Window")
+        def winEnumHandler(winId, ctx):
+            if win32gui.IsWindowVisible(winId):
+                title = win32gui.GetWindowText(winId)
+                if title: windows.append((winId, f"{hex(winId)} - {title}"))
 
         win32gui.EnumWindows(winEnumHandler, None)   
         return windows

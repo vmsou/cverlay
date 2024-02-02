@@ -118,7 +118,7 @@ class ImageDetectionThread(PausableThread):
 
 class Scanner(IScanner):
     """
-    Real Time Scanner based on window (hwnd)
+    Real Time Scanner based on window (winId)
     - Receives WindowCaptureThread (Sends image based at maxFPS speed)
     - Creates ImageDetectionThread (Receives WindowCaptureThread images and runs the detector with update method)
     """
@@ -158,7 +158,7 @@ class Scanner(IScanner):
     def status(self): self.detectionThread.status()
     def start(self): self.detectionThread.start()
     def stop(self): self.detectionThread.stop()
-    def resume(self): self.detectionThread.resume()
+    def play(self): self.detectionThread.play()
     def pause(self): self.detectionThread.pause()
     def toggle(self): self.detectionThread.toggle()
     

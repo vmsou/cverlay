@@ -2,6 +2,7 @@ from abc import ABC
 
 from dataclasses import dataclass, field
 
+
 @dataclass(frozen=True)
 class Detection(ABC):
     """This class represents a Labeled Detection
@@ -29,6 +30,8 @@ class Detection(ABC):
             Calculates area based on width and height
         contour : list[tuple[int, int]]
             Provides list of x and y coordinates that represents the detection
+        bbox : list[int, int, int, int]
+            Detection bbox (left, top, right, bottom)
     """
     label: str
     confidence: float
@@ -49,6 +52,10 @@ class Detection(ABC):
 
     @property
     def area(self) -> int: return self.width * self.height
+
+    @property
+    def bbox(self) -> tuple[int, int, int, int]:
+        return [self.x, self.y, self.x + self.width, self.y + self.height]
 
     @property
     def contour(self) -> list[tuple[int, int]]:

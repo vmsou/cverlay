@@ -29,9 +29,9 @@ class ScannerController:
         self.view.setRunning(False)
         self.model.stop()
 
-    def resume(self):
+    def play(self):
         self.view.setRunning(True)
-        self.model.resume()
+        self.model.play()
 
     def pause(self):
         self.view.setRunning(False)
@@ -39,7 +39,7 @@ class ScannerController:
 
     def toggle(self):
         if self.model.status(): self.pause()
-        else: self.resume()
+        else: self.play()
 
     def getName(self) -> str: return self.model.getName()    
     def getPos(self) -> tuple[int, int]: return self.model.getPos()
