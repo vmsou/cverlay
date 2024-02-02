@@ -1,3 +1,5 @@
+from itertools import cycle
+
 import cv2
 import numpy as np
 
@@ -5,7 +7,7 @@ from cverlay.detector import Detector, Detection
 
 
 class NetDetector(Detector):
-    def __init__(self, net: cv2.dnn.Net, classes: list[str], threshold: float = 0.2, scalefactor: float = 0.007, blob_size: tuple[int, int] = (300, 300), blob_mean: int = 130):
+    def __init__(self, net: cv2.dnn.Net, classes: list[str], threshold: float = 0.2, colors: list[str] = None, scalefactor: float = 0.007, blob_size: tuple[int, int] = (300, 300), blob_mean: int = 130):
         super().__init__()
         self.net = net
         self.classes = classes
@@ -14,7 +16,12 @@ class NetDetector(Detector):
         self.blob_size = blob_size
         self.blob_mean = blob_mean
 
-        self.colors = self.generateColors(len(classes))
+        if colors is None:
+            self.colors = self.generateColors(len(classes))
+        else:
+            # Repeat colors until its the same as classes
+            cycledColors = cycle(colors)
+            self.colors = [next(cycledColors) for _ in range(len(classes))]
 
     @staticmethod
     def rgb2hex(color: tuple[int, int, int]) -> str:
@@ -23,7 +30,7 @@ class NetDetector(Detector):
 
     @staticmethod
     def generateColors(n: int) -> list[str]:
-        colors: list[tuple[int, int, int]] = np.random.random_integers(0, 255, size=(n, 3))
+        colors: list[tuple[int, int, int]] = np.random.random_integers(0, 180, size=(n, 3))
         return [NetDetector.rgb2hex(color) for color in colors]
     
     def detect(self, bgr: np.ndarray) -> list[Detection]:
