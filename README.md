@@ -1,25 +1,23 @@
 # cverlay
 
 ## Introduction
-`cverlay` is a framework developed in python for creating and testing computer visions tools in real-time. This framework can be used for automation and is intended to interact with images that appear on your screen.
+`cverlay`, short for Computer Vision Overlay, is a Python framework designed for creating and testing real-time computer vision tools. This framework can be used for automation and is intended to interact with images displayed on your screen.
 
 ## Demo
 This video shows how cverlay works when running a Deep Neural Network
 
-https://github.com/vmsou/cverlay/assets/73619111/b5cc1b84-bec2-4de7-a1e4-79615eab8c12
+https://github.com/vmsou/cverlay/assets/73619111/4f28b36f-559d-46a9-9cfc-bf2c3dafd8c0
 
 ### Demo Code
 ```python
 import cv2
 
-from cverlay import Overlay
-
-from cverlay.detector import NetDetector
-from cverlay.scanner import Scanner
+from cverlay import Overlay, Scanner
+from cverlay.detector.detectors import NetDetector
 
 
 def main() -> None:
-    overlay = Overlay(maxFPS=5, hardwareAccel=True)
+    overlay = Overlay(visionMaxFPS=5, hardwareAccel=True)
 
     prototxt_path = "PATH_TO_PROTOTXT"
     model_path = "PATH_TO_CAFFEMODEL"
@@ -46,6 +44,7 @@ if __name__ == "__main__":
 ## Controls
 You can control the application through its GUI, tray icon, and shortcuts
 
-- F8 - Hide/Show Application (doesn't show detections)
-- F9 - Hide/Show Scanners (still shows detections)
-- F10 - Run/Pause Detectors
+- `CTRL+R` Play/Pause Detections
+- `CTRL+L` Lock/Unlock
+- `CTRL+H` Hide/Show
+- `CTRL+Q` Quit
